@@ -1,0 +1,166 @@
+
+import java.util.Locale;
+
+public class ShopSphereAudit {
+
+    // M1: Duplicate-Listing Detector
+    static long duplicateComparisons(long n) {
+        return n * (n - 1) / 2;
+    }
+
+    // M2: API Rate Limiter
+    static long auditOperations(long n) {
+        long i = 1;
+        long count = 0;
+
+        while (i < n) {
+            count += i;
+            i *= 2;
+        }
+
+        return count;
+    }
+
+    // S2: Binary Search
+    static int binarySearchComparisons(long n) {
+        int comparisons = 0;
+        long size = n;
+
+        while (size > 0) {
+            comparisons++;
+            size /= 2;
+        }
+
+        return comparisons;
+    }
+
+    // M4: Current recommendation design
+    // T(n) = 4T(n/2) + n, assuming n is a power of 2
+    static double currentRecommendation(double n) {
+        return 2 * n * n - n;
+    }
+
+    // M4: Proposed recommendation design
+    // T(n) = 2T(n/2) + n
+    static double proposedRecommendation(double n) {
+        return n * (Math.log(n) / Math.log(2) + 1);
+    }
+
+    // M5: Sales Analytics Engine
+    // T(n) = 2T(n/2) + n log2(n)
+    static double salesAnalytics(double n) {
+        double logN = Math.log(n) / Math.log(2);
+        return n * logN * (logN + 1) / 2 + n;
+    }
+
+    // Display estimated time based on operations per second
+    static void displayResult(String module, double operations,
+                              double operationsPerSecond) {
+        double seconds = operations / operationsPerSecond;
+
+        System.out.printf(
+            Locale.US,
+            "%-35s %,15.2f operations | %10.4f seconds%n",
+            module, operations, seconds
+        );
+    }
+
+    public static void main(String[] args) {
+
+        long n = 1_000_000;
+        double operationsPerSecond = 100_000_000.0;
+
+        System.out.println("==============================================");
+        System.out.println("       SHOPSPHERE SCALABILITY AUDIT");
+        System.out.println("==============================================");
+
+        // M1
+        long m1 = duplicateComparisons(n);
+
+        // M2
+        long m2 = auditOperations(n);
+
+        // S2
+        int s2 = binarySearchComparisons(n);
+
+        // M4
+        double m4Current = currentRecommendation(n);
+        double m4Proposed = proposedRecommendation(n);
+
+        // M5
+        double m5 = salesAnalytics(n);
+
+        System.out.println("\nINPUT SIZE: " + String.format(Locale.US, "%,d", n));
+        System.out.println("Assumed processing rate: 100 million operations/second\n");
+
+        System.out.println("1. BASIC OPERATION COUNTS");
+        System.out.println("----------------------------------------------");
+
+        System.out.printf(Locale.US,
+            "M1 Duplicate comparisons : %,d%n", m1);
+        System.out.printf(Locale.US,
+            "M2 Audit operations      : %,d%n", m2);
+        System.out.printf(Locale.US,
+            "S2 Binary search         : %d comparisons%n", s2);
+        System.out.printf(Locale.US,
+            "M4 Current design        : %,.0f operations%n", m4Current);
+        System.out.printf(Locale.US,
+            "M4 Proposed design       : %,.0f operations%n", m4Proposed);
+        System.out.printf(Locale.US,
+            "M5 Sales analytics       : %,.0f operations (estimated)%n", m5);
+
+        System.out.println("\n2. VERIFICATION FOR M2 (n = 1024)");
+        System.out.println("----------------------------------------------");
+        System.out.println("Expected audit operations: 1023");
+        System.out.println("Actual audit operations  : " + auditOperations(1024));
+
+        System.out.println("\n3. ESTIMATED RUNNING TIMES");
+        System.out.println("----------------------------------------------");
+
+        displayResult("M1 Duplicate Detector", m1, operationsPerSecond);
+        displayResult("M2 API Rate Limiter", m2, operationsPerSecond);
+        displayResult("S2 Binary Search (one search)", s2, operationsPerSecond);
+        displayResult("M4 Current Design", m4Current, operationsPerSecond);
+        displayResult("M4 Proposed Design", m4Proposed, operationsPerSecond);
+        displayResult("M5 Sales Analytics (estimated)", m5, operationsPerSecond);
+
+        System.out.println("\n4. NIGHTLY WINDOW CHECK (600 seconds)");
+        System.out.println("----------------------------------------------");
+
+        checkWindow("M1 Duplicate Detector", m1, operationsPerSecond);
+        checkWindow("M2 API Rate Limiter", m2, operationsPerSecond);
+        checkWindow("M4 Current Design", m4Current, operationsPerSecond);
+        checkWindow("M4 Proposed Design", m4Proposed, operationsPerSecond);
+        checkWindow("M5 Sales Analytics", m5, operationsPerSecond);
+
+        System.out.println("\n5. COMPLEXITY SUMMARY");
+        System.out.println("----------------------------------------------");
+        System.out.println("M1  : Theta(n^2)");
+        System.out.println("M2  : Theta(n)");
+        System.out.println("S1  : O(n)");
+        System.out.println("S2  : Theta(log n)");
+        System.out.println("M4 current  : Theta(n^2)");
+        System.out.println("M4 proposed : Theta(n log n)");
+        System.out.println("M5  : Theta(n log^2 n)");
+
+        System.out.println("\nRECOMMENDATION:");
+        System.out.println("Redesign M1 using a hash-based approach.");
+        System.out.println("Adopt the proposed M4 design.");
+        System.out.println("Use binary search on the sorted product index.");
+    }
+
+    static void checkWindow(String module, double operations,
+                            double operationsPerSecond) {
+        double seconds = operations / operationsPerSecond;
+
+        if (seconds > 600) {
+            System.out.printf(Locale.US,
+                "%s: EXCEEDS 10-minute window (%.2f seconds)%n",
+                module, seconds);
+        } else {
+            System.out.printf(Locale.US,
+                "%s: WITHIN 10-minute window (%.4f seconds)%n",
+                module, seconds);
+        }
+    }
+}
