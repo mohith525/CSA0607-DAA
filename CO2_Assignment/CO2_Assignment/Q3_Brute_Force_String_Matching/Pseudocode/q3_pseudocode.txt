@@ -1,0 +1,22 @@
+Q3 - BRUTE-FORCE STRING MATCHING: PSEUDOCODE
+
+BruteForceMatch(T[0..n-1], P[0..m-1])
+  comparisons <- 0;  matches <- empty list
+  for i <- 0 to n-m                      // every alignment of the pattern
+      j <- 0
+      while j < m
+          comparisons++                  // one CHARACTER comparison
+          if T[i+j] != P[j] then break
+          j <- j+1
+      if j = m then add i to matches
+  return matches, comparisons
+
+TEST DESIGN AND PREDICTIONS (n = 10000, m = 50)
+  T1 Best case : T = "AAAA...A", P = "B" + "A"x49
+        First char of P never matches -> 1 comparison per alignment -> predicted n-m+1 = 9,951
+  T2 Worst case: T = "AAAA...A", P = "A"x49 + "B"
+        49 characters match, last fails at every alignment -> predicted m(n-m+1) = 497,550
+  T3 Own test  : random lowercase log text (26 letters), pattern copied from the text
+        Mismatch nearly immediately -> about 26/25 = 1.04 comparisons per alignment
+  T4 Own test  : random binary text (2 symbols)
+        Matching probability 1/2 per character -> about 2 comparisons per alignment

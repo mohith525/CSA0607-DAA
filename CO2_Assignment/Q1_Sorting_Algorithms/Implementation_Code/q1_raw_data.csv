@@ -1,0 +1,31 @@
+n,dataset,algorithm,comparisons,swaps_or_moves,time_ms
+200,A_Random,Selection,19900,196,0.534
+200,A_Random,Bubble,19872,10122,1.091
+200,A_Random,Insertion,10318,10122,0.647
+200,B_Nearly_Sorted_95pct,Selection,19900,158,0.489
+200,B_Nearly_Sorted_95pct,Bubble,18819,912,0.636
+200,B_Nearly_Sorted_95pct,Insertion,1111,912,0.053
+200,C_Already_Sorted,Selection,19900,0,0.476
+200,C_Already_Sorted,Bubble,199,0,0.007
+200,C_Already_Sorted,Insertion,199,0,0.011
+200,D_Reverse_Sorted (edge),Selection,19900,100,0.5
+200,D_Reverse_Sorted (edge),Bubble,19900,19900,1.233
+200,D_Reverse_Sorted (edge),Insertion,19900,19900,0.998
+200,E_Many_Duplicates (edge),Selection,19900,154,0.484
+200,E_Many_Duplicates (edge),Bubble,18469,6861,0.829
+200,E_Many_Duplicates (edge),Insertion,7059,6861,0.379
+1000,A_Random,Selection,499500,995,16.267
+1000,A_Random,Bubble,499149,248445,31.394
+1000,A_Random,Insertion,249438,248445,14.803
+1000,B_Nearly_Sorted_95pct,Selection,499500,974,15.205
+1000,B_Nearly_Sorted_95pct,Bubble,499094,25719,18.489
+1000,B_Nearly_Sorted_95pct,Insertion,26718,25719,1.725
+1000,C_Already_Sorted,Selection,499500,0,15.131
+1000,C_Already_Sorted,Bubble,999,0,0.037
+1000,C_Already_Sorted,Insertion,999,0,0.057
+1000,D_Reverse_Sorted (edge),Selection,499500,500,15.762
+1000,D_Reverse_Sorted (edge),Bubble,499500,499500,38.55
+1000,D_Reverse_Sorted (edge),Insertion,499500,499500,28.35
+1000,E_Many_Duplicates (edge),Selection,499500,786,14.535
+1000,E_Many_Duplicates (edge),Bubble,481922,200181,27.3
+1000,E_Many_Duplicates (edge),Insertion,201180,200181,11.727

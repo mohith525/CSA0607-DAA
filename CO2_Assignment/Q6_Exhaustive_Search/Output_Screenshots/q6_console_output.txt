@@ -1,0 +1,58 @@
+CORRECTNESS INSTANCE  (payload limit = 10)
+   ('P1', 5, 10)
+   ('P2', 4, 40)
+   ('P3', 6, 30)
+   ('P4', 3, 50)
+   ('P5', 2, 15)
+
+  mask subset             weight  value  feasible
+     0 []                      0      0  YES
+     1 ['P1']                  5     10  YES
+    10 ['P2']                  4     40  YES
+    11 ['P1', 'P2']            9     50  YES
+   100 ['P3']                  6     30  YES
+   101 ['P1', 'P3']           11     40  no
+   110 ['P2', 'P3']           10     70  YES
+   111 ['P1', 'P2', 'P3']     15     80  no
+  1000 ['P4']                  3     50  YES
+  1001 ['P1', 'P4']            8     60  YES
+  1010 ['P2', 'P4']            7     90  YES
+  1011 ['P1', 'P2', 'P4']     12    100  no
+  1100 ['P3', 'P4']            9     80  YES
+  1101 ['P1', 'P3', 'P4']     14     90  no
+  1110 ['P2', 'P3', 'P4']     13    120  no
+  1111 ['P1', 'P2', 'P3', 'P4']     18    130  no
+ 10000 ['P5']                  2     15  YES
+ 10001 ['P1', 'P5']            7     25  YES
+ 10010 ['P2', 'P5']            6     55  YES
+ 10011 ['P1', 'P2', 'P5']     11     65  no
+ 10100 ['P3', 'P5']            8     45  YES
+ 10101 ['P1', 'P3', 'P5']     13     55  no
+ 10110 ['P2', 'P3', 'P5']     12     85  no
+ 10111 ['P1', 'P2', 'P3', 'P5']     17     95  no
+ 11000 ['P4', 'P5']            5     65  YES
+ 11001 ['P1', 'P4', 'P5']     10     75  YES
+ 11010 ['P2', 'P4', 'P5']      9    105  YES
+ 11011 ['P1', 'P2', 'P4', 'P5']     14    115  no
+ 11100 ['P3', 'P4', 'P5']     11     95  no
+ 11101 ['P1', 'P3', 'P4', 'P5']     16    105  no
+ 11110 ['P2', 'P3', 'P4', 'P5']     15    135  no
+ 11111 ['P1', 'P2', 'P3', 'P4', 'P5']     20    145  no
+
+Algorithm result : best value 105 with ['P2', 'P4', 'P5']  (32 candidates, 17 feasible)
+Independent check: best value 105 with ['P2', 'P4', 'P5']
+
+GROWTH INVESTIGATION  (weights 1-20, values 1-100, payload = 40% of total weight)
+   n  2^n (predicted)   candidates  feasible  item inspections  time (s)  time ratio
+  10            1,024        1,024       308            10,240     0.001            
+  12            4,096        4,096     1,114            49,152     0.003        x4.4
+  14           16,384       16,384     4,541           229,376     0.013        x4.8
+  16           65,536       65,536    16,157         1,048,576     0.060        x4.6
+  18          262,144      262,144    57,956         4,718,592     0.255        x4.3
+  20        1,048,576    1,048,576   219,862        20,971,520     1.618        x6.4
+
+Fitted model: time = 72.9 ns x n x 2^n
+Response-time budget   1 s -> largest n approx 19
+Response-time budget  10 s -> largest n approx 22
+Response-time budget  60 s -> largest n approx 24
+Predicted time for n=22: 6.7 s,  n=25: 61 s,  n=30: 0.7 hours,  n=40: 0.1 years
