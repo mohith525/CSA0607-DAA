@@ -1,0 +1,16 @@
+n (text) = 10000, m (pattern) = 50, alignments = 9951
+Test                       Predicted    Observed  Matches  Comps/alignment
+T1 Best-case                   9,951       9,951        0            1.000
+T2 Worst-case                497,550     497,550        0           50.000
+T3 Random log text            10,349      10,399        1            1.045
+T4 Random binary text         19,902      20,149        1            2.025
+
+Worst-case growth with pattern length m (text n=10000):
+  m=   5  comparisons=    49,980   m*(n-m+1)=    49,980
+  m=  10  comparisons=    99,910   m*(n-m+1)=    99,910
+  m=  25  comparisons=   249,400   m*(n-m+1)=   249,400
+  m=  50  comparisons=   497,550   m*(n-m+1)=   497,550
+  m= 100  comparisons=   990,100   m*(n-m+1)=   990,100
+  m= 200  comparisons= 1,960,200   m*(n-m+1)= 1,960,200
+
+Sanity test: 'abra' in 'abracadabra' -> [0, 7]

@@ -1,0 +1,22 @@
+Q7 - REDESIGN OF BRUTE-FORCE CLOSEST PAIR (selected from Q4)
+
+DIAGNOSIS: n(n-1)/2 distance calculations are done, but the closest pair is usually found early and
+           almost all remaining pairs are far apart and cannot improve 'best'.
+OBJECTIVE: stop examining a pair as soon as it is provably unable to beat the current best distance.
+KEY FACT : if the difference in x-coordinates of two points is already >= best, their distance is >= best.
+
+SweepClosestPair(D)
+  axis <- x                               // adaptive version: axis <- coordinate with the larger spread (O(n))
+  S <- D sorted by axis                   // preprocessing O(n log n), O(n) extra memory
+  best <- infinity
+  for i <- 0 to n-2
+      for j <- i+1 to n-1
+          gap <- S[j].axis - S[i].axis
+          if gap^2 >= best then break     // every later point is even farther along the axis
+          d <- squared distance(S[i], S[j]);  distCalcs++
+          if d < best then best <- d;  bestPair <- (i,j)
+  return sqrt(best), bestPair
+
+PREDICTION (made before testing)
+  Uniform / clustered data: distance calculations fall from n(n-1)/2 to a few per point (near-linear growth),
+  with a large reduction at n=3000.  Data with identical x: NO improvement (gap always 0); adaptive axis fixes it.

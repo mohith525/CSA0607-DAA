@@ -1,0 +1,21 @@
+Q6 - EXHAUSTIVE SEARCH FOR THE AIRLIFT: PSEUDOCODE
+
+REPRESENTATION : a candidate load is an n-bit mask; bit j = 1 means package j is loaded.  2^n masks in total.
+GENERATION     : for mask <- 0 to 2^n - 1  (counting in binary lists every subset exactly once)
+FEASIBILITY    : total weight of selected packages <= payload limit
+EVALUATION     : total humanitarian value of selected packages
+RETENTION      : keep the feasible mask with the highest value so far
+
+AirliftExhaustive(items[0..n-1], capacity)
+  bestValue <- -1;  bestMask <- 0
+  for mask <- 0 to 2^n - 1
+      w <- 0;  v <- 0
+      for j <- 0 to n-1
+          if bit j of mask = 1 then w <- w + weight[j];  v <- v + value[j]
+      if w <= capacity then
+          if v > bestValue then bestValue <- v;  bestMask <- mask
+  return bestMask, bestValue
+
+PREDICTION: candidates = 2^n.  Each extra package DOUBLES the candidates (n -> n+1 : x2); 5 extra packages x32; 10 extra x1024.
+            Work = n * 2^n item inspections.
+CORRECTNESS INSTANCE: 5 packages, payload 10 -> all 32 subsets listed and checked by hand (see report).

@@ -1,0 +1,36 @@
+
+===== n = 200 =====
+Dataset                     Algorithm    Comparisons  Swaps/Moves   Time(ms)
+A_Random                    Selection         19,900          196      0.534
+A_Random                    Bubble            19,872       10,122      1.091
+A_Random                    Insertion         10,318       10,122      0.647
+B_Nearly_Sorted_95pct       Selection         19,900          158      0.489
+B_Nearly_Sorted_95pct       Bubble            18,819          912      0.636
+B_Nearly_Sorted_95pct       Insertion          1,111          912      0.053
+C_Already_Sorted            Selection         19,900            0      0.476
+C_Already_Sorted            Bubble               199            0      0.007
+C_Already_Sorted            Insertion            199            0      0.011
+D_Reverse_Sorted (edge)     Selection         19,900          100        0.5
+D_Reverse_Sorted (edge)     Bubble            19,900       19,900      1.233
+D_Reverse_Sorted (edge)     Insertion         19,900       19,900      0.998
+E_Many_Duplicates (edge)    Selection         19,900          154      0.484
+E_Many_Duplicates (edge)    Bubble            18,469        6,861      0.829
+E_Many_Duplicates (edge)    Insertion          7,059        6,861      0.379
+
+===== n = 1000 =====
+Dataset                     Algorithm    Comparisons  Swaps/Moves   Time(ms)
+A_Random                    Selection        499,500          995     16.267
+A_Random                    Bubble           499,149      248,445     31.394
+A_Random                    Insertion        249,438      248,445     14.803
+B_Nearly_Sorted_95pct       Selection        499,500          974     15.205
+B_Nearly_Sorted_95pct       Bubble           499,094       25,719     18.489
+B_Nearly_Sorted_95pct       Insertion         26,718       25,719      1.725
+C_Already_Sorted            Selection        499,500            0     15.131
+C_Already_Sorted            Bubble               999            0      0.037
+C_Already_Sorted            Insertion            999            0      0.057
+D_Reverse_Sorted (edge)     Selection        499,500          500     15.762
+D_Reverse_Sorted (edge)     Bubble           499,500      499,500      38.55
+D_Reverse_Sorted (edge)     Insertion        499,500      499,500      28.35
+E_Many_Duplicates (edge)    Selection        499,500          786     14.535
+E_Many_Duplicates (edge)    Bubble           481,922      200,181       27.3
+E_Many_Duplicates (edge)    Insertion        201,180      200,181     11.727
