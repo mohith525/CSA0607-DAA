@@ -1,5 +1,0 @@
-test,n,m,predicted_comps,observed_comps,matches,reason
-T1 Best-case,10000,50,9951,9951,0,pattern[0] never matches -> exactly 1 comparison at each of n-m+1 alignments
-T2 Worst-case,10000,50,497550,497550,0,m-1 chars match then last fails at every alignment -> m comparisons x (n-m+1)
-T3 Random log text,10000,50,10349,10399,1,"random text, large alphabet -> mismatch almost at once: approx (n-m+1)*alpha/(alpha-1) = ~1.04 per alignment"
-T4 Random binary text,10000,50,19902,20149,1,alphabet of 2 -> expected ~2 comparisons per alignment
