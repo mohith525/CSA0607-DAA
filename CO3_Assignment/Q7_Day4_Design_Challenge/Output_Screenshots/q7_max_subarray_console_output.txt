@@ -1,0 +1,26 @@
+STAGE-1 CHECK: is Student B's initial design (best, total) enough?
+  counter-example: [-2, -5, 8, 7, -9, -1]  true answer 15, B-initial gives 8  (needs best suffix of left half and best prefix of right half)
+
+CORRECTNESS TESTS (final design versus brute force and Kadane)
+  single element         n= 1  answer = 5
+  single negative        n= 1  answer = -3
+  all negative           n= 6  answer = -2
+  all positive           n= 4  answer = 10
+  all zero               n= 3  answer = 0
+  alternating            n= 5  answer = 4
+  classic (CLRS)         n=16  answer = 43
+  crossing the middle    n= 9  answer = 6
+  max at both ends       n= 5  answer = 9
+  plus 3000 random arrays (sizes 1-80): all agree
+
+OPERATION COUNTS (additions + comparisons).  A = scan-crossing design, FINAL = 4-tuple design
+       n  brute n(n+1)/2 x2     A: scan     FINAL  FINAL/n  brute time   A time  FINAL time  Kadane time
+      64              4,160         957       504     7.88      0.0001   0.0001      0.0000       0.0000
+     256             65,792       4,861     2,040     7.97      0.0021   0.0005      0.0002       0.0001
+   1,024          1,049,600      23,549     8,184     7.99      0.0417   0.0038      0.0008       0.0003
+   2,048          4,196,352      51,197    16,376     8.00      0.1596   0.0065      0.0016       0.0005
+   4,096         16,781,312     110,589    32,760     8.00      0.6285   0.0141      0.0027       0.0010
+ 100,000                  -   3,637,853   799,992     8.00           -   0.4309      0.0643       0.0198
+1,000,000                  -  42,902,845 7,999,992     8.00           -   4.9282      0.7296       0.2143
+
+Theory: A -> T(n)=2T(n/2)+Theta(n)=Theta(n log n);  FINAL -> T(n)=2T(n/2)+Theta(1)=Theta(n): ops = 8(n-1) here (4 adds + 4 compares per combine, n-1 combines).

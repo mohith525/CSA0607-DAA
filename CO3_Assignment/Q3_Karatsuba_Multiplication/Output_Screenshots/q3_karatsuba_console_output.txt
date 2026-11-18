@@ -1,0 +1,31 @@
+Correctness: 200 random products agree with Python's built-in multiplication
+
+MULTIPLICATION COUNTS (single-digit multiplications)
+ n digits  school n^2  Karatsuba (T=1)  3^log2(n)  ratio school/Kar
+        2           4                3          3              1.33
+        4          16                9          9              1.78
+        8          64               27         27              2.37
+       16         256               81         81              3.16
+       32       1,024              243        243              4.21
+       64       4,096              729        729              5.62
+      128      16,384            2,187      2,187              7.49
+      256      65,536            6,561      6,561              9.99
+      512     262,144           19,683     19,683             13.32
+     1024   1,048,576           59,049     59,049             17.76
+     2048   4,194,304          177,147    177,147             23.68
+
+TIMING (pure Python, best of repeated runs, seconds)
+     n    school    Kar T=1    Kar T=8   Kar T=16   Kar T=32  T=1 faster?
+     4   0.00000    0.00001    0.00000    0.00000    0.00000           no
+     8   0.00000    0.00004    0.00000    0.00000    0.00000           no
+    16   0.00001    0.00011    0.00001    0.00001    0.00001           no
+    32   0.00004    0.00035    0.00005    0.00004    0.00004           no
+    64   0.00016    0.00111    0.00018    0.00015    0.00014           no
+   128   0.00067    0.00351    0.00061    0.00051    0.00052           no
+   256   0.00291    0.01123    0.00275    0.00162    0.00161           no
+   512   0.01344    0.03363    0.00632    0.00518    0.00518           no
+  1024   0.06484    0.09457    0.02080    0.01667    0.01626           no
+  2048   0.26559    0.27264    0.05706    0.04993    0.04948           no
+
+First tested size where pure Karatsuba (T=1) beats school-book: n = None digits
+Best cut-off per size (min over T): {4: 32, 8: 16, 16: 32, 32: 32, 64: 32, 128: 16, 256: 32, 512: 32, 1024: 32, 2048: 32}

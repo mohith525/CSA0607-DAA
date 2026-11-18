@@ -1,0 +1,20 @@
+Correctness: naive == Meet-in-the-Middle == brute force on 500 random instances
+
+WORST CASE (target unreachable, so the whole search space must be examined). Weights are even; target is odd.
+   n       naive 2^n  naive time(s)  MITM sums generated 2*2^(n/2)  MITM search steps  MITM time(s)  stored sums  speed-up
+  16           65,536          0.009                            512                510         0.000          512     90.1x
+  20        1,048,576          0.147                          2,048              2,031         0.000        2,048    365.4x
+  22        4,194,304          0.597                          4,096              4,094         0.001        4,096    689.4x
+  24       16,777,216          2.449                          8,192              8,174         0.002        8,192   1421.8x
+  28      268,435,456     (too slow)                         32,768             32,751         0.007       32,768          
+  32    4,294,967,296     (too slow)                        131,072            131,071         0.039      131,072          
+  36   68,719,476,736     (too slow)                        524,288            524,269         0.206      524,288          
+  401,099,511,627,776     (too slow)                      2,097,152          2,097,058         1.401    2,097,152          
+
+MEMORY (peak Python allocation measured with tracemalloc)
+  n=20: stored sums =     2,048   peak memory =      0.1 MB   (naive Gray-code enumeration needs O(n) memory)
+  n=24: stored sums =     8,192   peak memory =      0.4 MB   (naive Gray-code enumeration needs O(n) memory)
+  n=28: stored sums =    32,768   peak memory =      1.5 MB   (naive Gray-code enumeration needs O(n) memory)
+  n=32: stored sums =   131,072   peak memory =      6.0 MB   (naive Gray-code enumeration needs O(n) memory)
+
+Extrapolation: n=60 -> naive 2^60 = 1.15e+18 subsets; MITM 2*2^30 = 2,147,483,648 sums (~17 GB at 8 bytes each) -> memory, not time, becomes the limit

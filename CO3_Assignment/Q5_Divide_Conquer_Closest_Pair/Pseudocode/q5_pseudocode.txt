@@ -1,0 +1,23 @@
+Q5 - DIVIDE-AND-CONQUER CLOSEST PAIR: PSEUDOCODE
+
+ORGANISING THE POINTS (Student A): sort once by x  -> Px;  sort once by y -> Py  (O(n log n) preprocessing).
+
+ClosestPair(Px, Py)
+  if |Px| <= 3 then return brute force on these points                // base case
+  mid <- |Px| / 2;  midx <- Px[mid].x                                  // vertical dividing line
+  Pyl, Pyr <- points of Py that belong to the left / right half (keeping y order)     // O(n), no re-sorting
+  dl <- ClosestPair(Px[0..mid-1], Pyl);   dr <- ClosestPair(Px[mid..], Pyr)           // each call returns its closest distance
+  d  <- min(dl, dr)
+  strip <- points of Py with |x - midx| < d                            // only points close to the dividing line, in y order
+  for each point p in strip:
+        for each following point q in strip while q.y - p.y < d:       // at most a constant (<= 7) candidates
+             d <- min(d, distance(p, q))
+  return d
+
+WHY THE DIVIDING LINE NEEDS SPECIAL TREATMENT: the closest pair may have one point in each half, and neither recursive call sees it.
+WHY THE STRIP IS CHEAP: every point in the left half is at least d from every other point of the left half (d = best distance so far),
+  likewise for the right half. A d x 2d rectangle straddling the dividing line splits into eight (d/2 x d/2) cells; two points in one cell
+  would be closer than d, so each cell holds at most one point -> at most 8 points in the rectangle. Hence each strip point is compared only with
+  at most 7 later points in y order, not with all n points.
+RECURRENCE: T(n) = 2T(n/2) + O(n)  ->  O(n log n)   (plus O(n log n) for the initial sorts).
+COMPARISON (Student B): brute force n(n-1)/2 distance calculations versus D&C, same datasets (uniform, clustered, same-x), n = 8 .. 3000, D&C up to 100,000.

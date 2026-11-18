@@ -1,0 +1,20 @@
+Q7 - MAXIMUM SUBARRAY SUM: JOINT FINAL DESIGN (see Joint_Final_Design/ for the design record)
+
+PROBLEM: given a[0..n-1] (n >= 1, values may be negative), find the largest sum of a NON-EMPTY contiguous block.
+
+Solve(a, lo, hi) returns the 4-tuple (best, prefix, suffix, total) for a[lo..hi]
+   best   = largest sum of any non-empty block inside a[lo..hi]
+   prefix = largest sum of a block that STARTS at lo        suffix = largest sum of a block that ENDS at hi
+   total  = sum of the whole segment
+
+  if lo = hi then return (a[lo], a[lo], a[lo], a[lo])                                  // base case
+  mid <- (lo + hi) / 2
+  (bl, pl, sl, tl) <- Solve(a, lo, mid);   (br, pr, sr, tr) <- Solve(a, mid+1, hi)     // two half-size subproblems
+  best   <- max( bl, br, sl + pr )                  // inside left, inside right, or crossing the middle
+  prefix <- max( pl, tl + pr )                      // prefix stays in left, or covers all of left and continues into right
+  suffix <- max( sr, tr + sl )
+  total  <- tl + tr
+  return (best, prefix, suffix, total)
+
+RECURRENCE: T(n) = 2 T(n/2) + Theta(1)   ->  T(n) = Theta(n)   (n-1 combines, each 4 additions + 4 comparisons = 8 operations)
+Student A's initial combine scanned outwards from the middle (Theta(n) per combine): T(n) = 2T(n/2) + Theta(n) = Theta(n log n).

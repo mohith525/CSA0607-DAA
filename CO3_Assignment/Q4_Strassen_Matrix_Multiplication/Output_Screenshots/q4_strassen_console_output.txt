@@ -1,0 +1,46 @@
+Correctness: Strassen == conventional for n = 1..16 (powers of 2) and for n = 3, 5, 10, 17, 33 (padded)
+
+OPERATION COUNTS (cut-off 1: recurse down to 1x1)
+     n  conv mults n^3  Strassen mults 7^k     conv adds  Strassen adds  mult ratio  adds ratio
+     2               8                   7             4             18        1.14        0.22
+     4              64                  49            48            198        1.31        0.24
+     8             512                 343           448          1,674        1.49        0.27
+    16           4,096               2,401         3,840         12,870        1.71        0.30
+    32          32,768              16,807        31,744         94,698        1.95        0.34
+    64         262,144             117,649       258,048        681,318        2.23        0.38
+   128       2,097,152             823,543     2,080,768      4,842,954        2.55        0.43
+   256      16,777,216           5,764,801    16,711,680     34,195,590        2.91        0.49
+  (recurrence values verified by instrumented run at n=16)
+
+TIMING, pure Python lists (seconds, best of repeats); Strassen with cut-off 16 and 32
+     n  conventional  Strassen cut=16  Strassen cut=32  total ops conv  total ops S(16)
+    16        0.0003           0.0003           0.0003           7,936            7,936
+    32        0.0019           0.0024           0.0019          64,512           60,160
+    64        0.0136           0.0188           0.0150         520,192          439,552
+   128        0.1037           0.1415           0.1137       4,177,920        3,150,592
+   256        0.7848           1.0728           0.8905      33,488,896       22,349,056
+
+CUT-OFF SWEEP at n = 128 (pure Python): conventional = cut-off 128
+  cut-off    2: mults    941,192  adds  3,195,868  time 0.9333 s
+  cut-off    4: mults  1,075,648  adds  2,321,904  time 0.4632 s
+  cut-off    8: mults  1,229,312  adds  1,899,328  time 0.2382 s
+  cut-off   16: mults  1,404,928  adds  1,745,664  time 0.1430 s
+  cut-off   32: mults  1,605,632  adds  1,758,208  time 0.1168 s
+  cut-off   64: mults  1,835,008  adds  1,880,064  time 0.1089 s
+  cut-off  128: mults  2,097,152  adds  2,080,768  time 0.1103 s
+
+PADDING COST (non power-of-two sizes, cut-off 16)
+     n  padded to   conv mults  Strassen mults  extra vs conv
+    64         64      262,144         200,704           -23%
+    65        128      274,625       1,404,928           412%
+   100        128    1,000,000       1,404,928            40%
+   128        128    2,097,152       1,404,928           -33%
+   129        256    2,146,689       9,834,496           358%
+   200        256    8,000,000       9,834,496            23%
+
+NUMPY (BLAS conventional kernel; Strassen recursion stops at cut-off), float64, seconds
+     n      np @  Strassen c=256  Strassen c=512  max |error| (c=256)
+   256    0.0008          0.0007          0.0007             0.00e+00
+   512    0.0054          0.0090          0.0049             2.63e-13
+  1024    0.0371          0.0738          0.0576             6.50e-13
+  2048    0.2705          0.5484          0.4338             1.88e-12
