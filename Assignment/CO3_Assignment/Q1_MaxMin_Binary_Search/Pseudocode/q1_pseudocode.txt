@@ -1,0 +1,37 @@
+Q1 - PART A: DIVIDE-AND-CONQUER MAX/MIN   (Student A: design and mathematical analysis)
+
+DECOMPOSITION (tournament): split the array in two halves, find (min, max) of each half independently,
+then the overall min is the smaller of the two minima and the overall max is the larger of the two maxima.
+
+MaxMin(A, lo, hi)  returns (min, max)
+  if lo = hi            then return (A[lo], A[lo])                 // base case 1: 1 element, 0 comparisons
+  if hi = lo + 1        then                                        // base case 2: 2 elements, 1 comparison
+        if A[lo] < A[hi] then return (A[lo], A[hi]) else return (A[hi], A[lo])
+  mid <- (lo + hi) / 2
+  (min1, max1) <- MaxMin(A, lo, mid)                               // subproblem 1
+  (min2, max2) <- MaxMin(A, mid+1, hi)                             // subproblem 2
+  return ( smaller(min1, min2), larger(max1, max2) )               // COMBINE: 2 comparisons
+
+RECURRENCE (n a power of 2):  T(2) = 1,   T(n) = 2 T(n/2) + 2
+  Unrolling: T(n) = 2^k T(n/2^k) + 2(2^k - 1) ... with n/2^k = 2:  T(n) = n/2 * 1 + 2(n/2 - 1) = 3n/2 - 2
+  Independent search for max then min: (n-1) + (n-1) = 2n - 2 comparisons.
+  Saving: (2n-2) - (3n/2 - 2) = n/2 comparisons  -> D&C uses 75% of the comparisons for large n.
+
+Student B - experiment: count comparisons for n = 2..4096 (powers of two and other sizes) on random, ascending and
+descending data. Prediction: exactly 3n/2 - 2 for powers of two, independent of the data order.
+
+---------------------------------------------------------------------------------------------------------------
+Q1 - PART B: BINARY SEARCH   (Student B: elimination logic)
+
+BinarySearch(A[0..n-1] sorted ascending, target)
+  lo <- 0;  hi <- n - 1
+  while lo <= hi
+      mid <- (lo + hi) / 2;   probes++                              // one comparison of target with A[mid]
+      if A[mid] = target then return mid
+      if target < A[mid]  then hi <- mid - 1                        // eliminate mid and everything to its right
+      else                     lo <- mid + 1                        // eliminate mid and everything to its left
+  return NOT FOUND                                                  // lo > hi : search space is empty
+
+DECISION RULE / ELIMINATION: A is sorted, so if target < A[mid] every element at positions >= mid is >= A[mid] > target.
+TERMINATION: the search space size n -> at most floor(n/2) each iteration, so it becomes empty after at most floor(log2 n) + 1 probes.
+EXPERIMENT (Student A): successful search of every element and unsuccessful search for every gap, n from 7 to 2^20 - 1.

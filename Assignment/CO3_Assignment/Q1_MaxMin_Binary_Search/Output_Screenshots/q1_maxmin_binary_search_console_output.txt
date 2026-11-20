@@ -1,0 +1,31 @@
+PART A - MAX/MIN: D&C versus independent search
+      n     dataset  D&C obs   3n/2-2  ceil(3n/2)-2  independent 2(n-1)  saving
+      2      random        1      1.0             1                   2   50.0%
+      4      random        4      4.0             4                   6   33.3%
+      8      random       10     10.0            10                  14   28.6%
+     16      random       22     22.0            22                  30   26.7%
+     64      random       94     94.0            94                 126   25.4%
+    256      random      382    382.0           382                 510   25.1%
+   1024      random     1534   1534.0          1534                2046   25.0%
+   4096      random     6142   6142.0          6142                8190   25.0%
+      6      random        8      7.0             7                  10   20.0%
+     10      random       14     13.0            13                  18   22.2%
+    100      random      162    148.0           148                 198   18.2%
+   1000      random     1510   1498.0          1498                1998   24.4%
+   3000      random     4974   4498.0          4498                5998   17.1%
+
+Count is independent of data order (random/ascending/descending identical): True
+Check n=2..299 against ceil(3n/2)-2: 276 mismatches [(6, 8, 7), (10, 14, 13), (11, 16, 15), (12, 18, 16), (13, 19, 18), (14, 20, 19), (18, 26, 25), (19, 28, 27)]
+Power-of-two sizes match 3n/2-2 exactly; other sizes: see mismatches above.
+
+PART B - BINARY SEARCH (probe = one comparison of target with a[mid])
+        n  floor(log2 n)+1  max succ  avg succ  max unsucc  avg unsucc
+        7                3         3      2.43           3        3.00
+       15                4         4      3.27           4        4.00
+      100                7         7      5.80           7        6.73
+    1,000               10        10      8.99          10        9.98
+   10,000               14        14     12.39          14       13.34
+  100,000               17        17     15.75          17       16.70
+1,000,000               20        20     18.99          20       19.93
+1,048,575               20        20     20.00          20       20.00
+Linear search would need up to n comparisons: n=1,000,000 -> 1,000,000 versus 20 probes.

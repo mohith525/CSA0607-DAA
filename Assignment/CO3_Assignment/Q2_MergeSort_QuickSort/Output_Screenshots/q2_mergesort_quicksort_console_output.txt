@@ -1,0 +1,45 @@
+PIVOT STRATEGY: first element.  Datasets: balanced (constructed), random, ascending, descending, all-equal
+     n       dataset         algorithm  comparisons max depth   root split (left,right)
+   127      balanced         MergeSort          584         8                         -
+   127      balanced  QuickSort(first)          642         7                   (63,63)
+   127      balanced QuickSort(random)          923        15                  (14,112)
+   127        random         MergeSort          730         8                         -
+   127        random  QuickSort(first)          838        14                   (96,30)
+   127        random QuickSort(random)          975        15                   (93,33)
+   127     ascending         MergeSort          441         8                         -
+   127     ascending  QuickSort(first)        8,001       127                   (0,126)
+   127     ascending QuickSort(random)          960        15                  (17,109)
+   127    descending         MergeSort          447         8                         -
+   127    descending  QuickSort(first)        8,001       127                   (126,0)
+   127    descending QuickSort(random)          901        14                  (109,17)
+   127     all-equal         MergeSort          441         8                         -
+   127     all-equal  QuickSort(first)        8,001       127                   (0,126)
+   127     all-equal QuickSort(random)        8,001       127                   (0,126)
+
+  2047      balanced         MergeSort       15,513        12                         -
+  2047      balanced  QuickSort(first)       18,434        11               (1023,1023)
+  2047      balanced QuickSort(random)       26,593        26                (268,1778)
+  2047        random         MergeSort       19,933        12                         -
+  2047        random  QuickSort(first)       27,234        27                (598,1448)
+  2047        random QuickSort(random)       23,506        22                (671,1375)
+  2047     ascending         MergeSort       11,253        12                         -
+  2047     ascending  QuickSort(first)    2,094,081      2047                  (0,2046)
+  2047     ascending QuickSort(random)       24,521        24                (275,1771)
+  2047    descending         MergeSort       11,263        12                         -
+  2047    descending  QuickSort(first)    2,094,081      2047                  (2046,0)
+  2047    descending QuickSort(random)       25,162        27                (1771,275)
+  2047     all-equal         MergeSort       11,253        12                         -
+  2047     all-equal  QuickSort(first)    2,094,081      2047                  (0,2046)
+  2047     all-equal QuickSort(random)    2,094,081      2047                  (0,2046)
+
+Partition sizes (subarray size, left, right) for the first levels, n = 127, first-element pivot
+  balanced  : [(127, 63, 63), (63, 31, 31), (31, 15, 15), (31, 15, 15), (63, 31, 31), (31, 15, 15), (31, 15, 15)]
+  ascending : [(127, 0, 126), (126, 0, 125), (125, 0, 124)]
+
+Theory: balanced -> depth = log2(n+1) = [7, 8, 9, 10, 11] ; ascending -> depth = n; comparisons n(n-1)/2 = [8001, 32385, 130305, 522753, 2094081]
+
+90:10 EXPERIMENT (oracle pivot at 10th percentile, random data):
+     n  depth  log_{10/9}(n)  depth 50:50 = log2 n  comparisons  n*log2(n)
+   127     29           46.0                   7.0        1,331        888
+   511     42           59.2                   9.0        7,508      4,598
+  2047     56           72.4                  11.0       38,883     22,516

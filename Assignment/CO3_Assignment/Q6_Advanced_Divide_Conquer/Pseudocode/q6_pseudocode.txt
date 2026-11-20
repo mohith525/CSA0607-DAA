@@ -1,0 +1,26 @@
+Q6 - ADVANCED D&C: PSEUDOCODE
+
+=== STUDENT A: MEDIAN OF MEDIANS (k-th smallest, worst-case linear) ===
+Select(A, k)
+  if |A| <= 5 then sort A and return A[k]
+  split A into groups of 5 (last group may be smaller);  sort each group;  medians <- median of each group
+  pivot <- Select(medians, |medians| / 2)                       // median of the medians (recursive call on n/5 elements)
+  (L, E, G) <- elements less than / equal to / greater than pivot
+  if k < |L| then return Select(L, k)
+  if k < |L| + |E| then return pivot
+  return Select(G, k - |L| - |E|)
+GUARANTEE: at least half of the n/5 group medians are <= pivot, and each such group contributes 3 elements <= pivot,
+  so at least 3n/10 elements are <= pivot (and likewise >= pivot) -> the recursive call has at most 7n/10 elements.
+  T(n) <= T(n/5) + T(7n/10) + c n  and 1/5 + 7/10 = 9/10 < 1  ->  T(n) = O(n).
+QuickSelect(A, k): same structure but the pivot is chosen cheaply (first element or random element).
+
+=== STUDENT B: MEET-IN-THE-MIDDLE SUBSET-SUM (is there a subset with sum T?) ===
+MITM(w[0..n-1], T)
+  L <- all 2^(n/2) subset sums of the first half;  R <- all 2^(n/2) subset sums of the second half
+  sort L ascending, sort R ascending
+  i <- 0;  j <- |R| - 1                                          // two-pointer search for L[i] + R[j] = T
+  while i < |L| and j >= 0
+       s <- L[i] + R[j]
+       if s = T return YES;  if s < T then i <- i + 1 else j <- j - 1
+  return NO
+SEARCH SPACE: 2 x 2^(n/2) sums instead of 2^n subsets.   MEMORY: Theta(2^(n/2)) stored sums (naive Gray-code enumeration needs O(n)).

@@ -1,0 +1,23 @@
+Q3 - STANDARD AND KARATSUBA MULTIPLICATION: PSEUDOCODE (n-digit numbers as digit lists, little-endian)
+
+Standard(a[0..n-1], b[0..n-1])
+  for i <- 0 to n-1: for j <- 0 to n-1:  res[i+j] <- res[i+j] + a[i]*b[j]      // n^2 single-digit multiplications
+  normalise carries
+
+DECOMPOSITION: x = x1 * 10^m + x0,  y = y1 * 10^m + y0   (m = n/2)
+  x*y = x1*y1 * 10^(2m) + (x1*y0 + x0*y1) * 10^m + x0*y0           // 4 half-size multiplications
+
+Karatsuba(a, b)                                                    // cut-off T (T=1: recurse to single digits)
+  n <- |a|;  if n <= T then return Standard(a, b)
+  m <- n / 2;  a0, a1 <- low and high halves of a;  b0, b1 <- low and high halves of b
+  z0 <- Karatsuba(a0, b0)                                          // multiplication 1
+  z2 <- Karatsuba(a1, b1)                                          // multiplication 2
+  z1 <- Karatsuba(a0 + a1, b0 + b1)                                // multiplication 3
+  middle <- z1 - z0 - z2                                           // = a0*b1 + a1*b0  (no 4th multiplication needed)
+  return z2 * 10^(2m) + middle * 10^m + z0                         // shifts and additions only
+
+RECURRENCE:  T(n) = 3 T(n/2) + c n     (three half-size multiplications + linear additions/shifts)
+  Master theorem: a = 3, b = 2, log_2 3 = 1.585 > 1 (leaves dominate)  ->  T(n) = Theta(n^(log2 3)) = Theta(n^1.585)
+  Standard: T(n) = 4 T(n/2) + c n = Theta(n^2).     Digit multiplications for n = 2^k: 3^k  versus  4^k = n^2.
+
+CROSSOVER EXPERIMENT (Student B): n = 4 .. 2048 digits, repeated timing, cut-offs T = 1, 8, 16, 32; count single-digit multiplications.
